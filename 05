@@ -4,7 +4,7 @@ int qtdade = 0;
 
 struct emprestimo{
 	char data[20];
-	char nomeJogador[20];
+	char nomeJogador[30];
 	char emprestado[1];
 }temprestimo;
 
@@ -120,7 +120,7 @@ void carregaDados(tjogo jogo[]){
 void buscarTitulo(tjogo jogo[]){
 	
 	int m;
-	char nome[20];
+	char nome[30];
 	printf("\nDigite o titulo do jogo a ser encontrado:\n");
 	fflush(stdin);
 	gets(nome);
@@ -143,7 +143,7 @@ void buscarTitulo(tjogo jogo[]){
 void buscarConsole(tjogo jogo[]){
 	
 	int m;
-	char nome[20];
+	char nome[30];
 	printf("\nDigite o console:\n");
 	fflush(stdin);
 	gets(nome);
@@ -165,7 +165,7 @@ void buscarConsole(tjogo jogo[]){
 
 void emprestar(tjogo jogo[]){
 	int m;
-	char nome[20],opcao[1];
+	char nome[30],opcao[1];
 	printf("\nDigite o titulo do jogo que sera emprestrado:\n");
 	fflush(stdin);
 	gets(nome);
@@ -193,7 +193,7 @@ void emprestar(tjogo jogo[]){
 
 void devolver(tjogo jogo[]){
 	int m;
-	char nome[20],opcao[1];
+	char nome[30],opcao[1];
 	printf("\nDigite o titulo do jogo que vai ser devolvido:\n");
 	fflush(stdin);
 	gets(nome);
