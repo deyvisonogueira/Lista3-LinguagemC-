@@ -1,0 +1,185 @@
+#include<stdio.h>
+int max = 100;
+int qtdade = 0;
+
+struct nasc{
+	int mes;
+	int ano;
+}t;
+typedef struct gado{
+	int codigo;
+	double leite;
+	double alim;
+	struct nasc nasc;
+	char abate[1];
+	
+}tgado;
+
+int menu(){
+	int op;
+	printf("*** CADASTRO CABEÇA GADO ****\n");
+	printf("1-Add nova cabeca de gado\n");
+	printf("2-Mostrar as cabecas de gado\n");
+	printf("3-Guardar em arquivo txt\n");
+	printf("4-Baixar arquivo txt\n");
+	printf("5-Qtdade de leite produzida por semana\n");
+	printf("6-Total de alimento produzido por semana\n");
+	printf("7-Animais que devem ir para o abate\n");
+	
+	printf("0-Sair\n");
+	scanf("%d",&op);
+	return op;
+}
+
+void cadastrarGado(tgado gado[]){
+	printf("***** Dados para cabeca de gado %d *****\n",qtdade+1);
+	
+	printf("Codigo:\n");
+	scanf("%d",&gado[qtdade].codigo);
+	
+	printf("Leite:\n");
+	scanf("%lf",&gado[qtdade].leite);
+	
+	printf("Alim:\n");
+	scanf("%lf",&gado[qtdade].alim);
+	
+	printf("Ano de nascimento:\n");
+	scanf("%d",&gado[qtdade].nasc.ano);
+	
+	printf("Mes de nascimento:\n");
+	scanf("%d",&gado[qtdade].nasc.mes);
+	
+	if((2021-gado[qtdade].nasc.ano)>5 || gado[qtdade].leite<40){
+		strcpy(gado[qtdade].abate,"S");
+	}else{
+		strcpy(gado[qtdade].abate,"N");
+	}
+	
+	qtdade++;
+}
+
+
+void mostraGado(tgado gado[]){
+	int g;
+	for(g=0;g<qtdade;g++){
+		printf("\n***** Dados para cabeca de gado %d *****\n",g+1);
+		printf("Codigo: %d\n",gado[g].codigo);
+		printf("Leite (litros): %.2lf\n",gado[g].leite);
+		printf("Alim (quilos): %.2lf\n",gado[g].alim);
+		printf("Ano de nascimento: %i\n",gado[g].nasc.ano);
+		printf("Mes de nascimento: %i\n",gado[g].nasc.mes);
+		printf("Abate: %s\n",gado[g].abate);
+	}
+}
+
+void salvarDados(tgado gado[]){
+	int g;
+	FILE *arq;
+	arq = fopen("gados.txt","w");
+	fprintf(arq,"%d\n",qtdade);
+	
+	for(g=0;g<qtdade;g++){
+		fprintf(arq,"%d\n",gado[g].codigo);
+		fprintf(arq,"%lf\n",gado[g].leite);
+		fprintf(arq,"%lf\n",gado[g].alim);
+		fprintf(arq,"%i\n",gado[g].nasc.ano);
+		fprintf(arq,"%i\n",gado[g].nasc.mes);
+		fprintf(arq,"%s\n",gado[g].abate);
+	}
+	printf("Dados guardados com sucesso :)");
+}
+
+void carregaDados(tgado gado[]){
+	FILE *arq;
+	int g;
+	arq = fopen("gados.txt","r");
+	if(arq==NULL){
+		printf("Arquivo nao foi achado :(\n");
+		return;
+	}
+	fscanf(arq,"%d",&qtdade);
+	for(g=0;g<qtdade;g++){
+		
+
+		fscanf(arq,"%d\n",&gado[g].codigo);
+		fscanf(arq,"%lf\n",&gado[g].leite);
+		fscanf(arq,"%lf\n",&gado[g].alim);
+		fscanf(arq,"%i\n",&gado[g].nasc.ano);
+		fscanf(arq,"%i\n",&gado[g].nasc.mes);
+		fscanf(arq,"%s\n",&gado[g].abate);
+		
+	}
+	fclose(arq);
+	printf("Dados baixados com sucesso :)\n");
+}
+
+void leiteProduzido(tgado gado[]){
+	double totalLeite=0;
+	int g;
+	for(g=0;g<qtdade;g++){
+		totalLeite += gado[g].leite;
+	}
+	printf("Total de leite produzido por semana e: %.2lf litros\n",totalLeite);
+}
+
+void alimentoConsumido(tgado gado[]){
+	double totalAlimento=0;
+	int g;
+	for(g=0;g<qtdade;g++){
+		totalAlimento += gado[g].alim;
+	}
+	printf("Total de alimento consumido por semana e: %.2lf quilos ",totalAlimento);
+}
+
+void animaisAbate(tgado gado[]){
+	int g;
+	for(g=0;g<qtdade;g++){
+		if(strcmp(gado[g].abate,"S") == 0){
+		printf("\n***** Dados para cabeca de gado %d *****\n",g+1);
+		printf("Codigo: %d\n",gado[0].codigo);
+		printf("Leite (litros): %.2lf\n",gado[g].leite);
+		printf("Alim (quilos): %.2lf\n",gado[g].alim);
+		printf("Ano de nascimento: %i\n",gado[g].nasc.ano);
+		printf("Mes de nascimento: %i\n",gado[g].nasc.mes);
+		printf("Abate: %s\n",gado[g].abate);
+		}
+	}
+}
+
+int main(){
+	int op=0;
+	tgado gado[max];
+	
+	do{
+		op = menu();
+		switch(op){
+			case 1:
+				cadastrarGado(gado);
+				break;
+			case 2:
+				mostraGado(gado);
+				break;				
+			case 3:
+				salvarDados(gado);
+				break;
+			case 4:
+				carregaDados(gado);
+				break;
+			case 5:
+				leiteProduzido(gado);
+				break;
+			case 6:
+				alimentoConsumido(gado);
+				break;
+			case 7:
+				animaisAbate(gado);
+				break;
+		}
+		
+      	getch();
+      	system("cls");
+      	
+	}while(op!=0);
+	
+	return 0;
+}
