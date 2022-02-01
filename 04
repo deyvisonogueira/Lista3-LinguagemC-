@@ -54,12 +54,12 @@ void salvarDados(teletrodomestico eletrodomestico[]){
 	int m;
 	FILE *arq;
 	arq = fopen("eletrodomesticos.txt","w");
-	printf(arq,"%d\n",qtdade);
+	fprintf(arq,"%d\n",qtdade);
 	
 	for(m=0;m<qtdade;m++){
-		printf(arq,"%s\n",eletrodomestico[m].nome);
-		printf(arq,"%lf\n",eletrodomestico[m].potencia);
-		printf(arq,"%lf\n",eletrodomestico[m].tMedio);
+		fprintf(arq,"%s\n",eletrodomestico[m].nome);
+		fprintf(arq,"%lf\n",eletrodomestico[m].potencia);
+		fprintf(arq,"%lf\n",eletrodomestico[m].tMedio);
 	}
 	printf("Dados guardados com sucesso :)");
 }
@@ -74,9 +74,9 @@ void carregaDados(teletrodomestico eletrodomestico[]){
 	}
 	scanf(arq,"%d",&qtdade);
 	for(m=0;m<qtdade;m++){
-		scanf(arq,"%s",&eletrodomestico[m].nome);
-		scanf(arq,"%lf",&eletrodomestico[m].potencia);
-		scanf(arq,"%lf",&eletrodomestico[m].tMedio);
+		fscanf(arq,"%s",&eletrodomestico[m].nome);
+		fscanf(arq,"%lf",&eletrodomestico[m].potencia);
+		fscanf(arq,"%lf",&eletrodomestico[m].tMedio);
 	}
 	close(arq);
 	printf("Dados baixados com sucesso :)\n");
