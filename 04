@@ -1,0 +1,177 @@
+#include<stdio.h>
+int max = 100;
+int qtdade = 0;
+
+typedef struct eletrodomestico{
+	char nome[40];
+	double potencia;
+	double tMedio;
+}teletrodomestico;
+
+int menu(){
+	int op;
+	printf("*** CONTROLE DE CONSUMO DE ENERGIA****\n");
+	printf("1-Add novo eletrodomestico\n");
+	printf("2-Mostrar os eletrodomesticos\n");
+	printf("3-Salvar em arquivo txt\n");
+	printf("4-Baixar arquivo txt\n");
+	printf("5-Procurar por nome\n");
+	printf("6-Eletrodomesticos com potencia maior que um valor X\n");
+	printf("7-Gasto diario e mensal\n");
+	
+	printf("0-Sair\n");
+	scanf("%d",&op);
+	return op;
+}
+
+void cadastrarEletrodomestico(teletrodomestico eletrodomestico[]){
+	printf("***** Dados para eletrodomestico %d *****\n",qtdade+1);
+	
+	printf("Nome:\n");
+	fflush(stdin);
+	gets(eletrodomestico[qtdade].nome);
+	
+	printf("Potencia (kW):\n");
+	scanf("%lf",&eletrodomestico[qtdade].potencia);
+	
+	printf("Tempo Medio de uso por dia -horas-:\n");
+	scanf("%lf",&eletrodomestico[qtdade].tMedio);
+	
+	qtdade++;
+}
+
+void mostraEletrodomesticos(teletrodomestico eletrodomestico[]){
+	int m;
+	for(m=0;m<qtdade;m++){
+		printf("\n***** Dados para eletrodomestico %d *****\n",m+1);
+		printf("Nome: %s\n",eletrodomestico[m].nome);
+		printf("Potencia: %.2lf kW\n",eletrodomestico[m].potencia);
+		printf("Tempo Medio: %.2lf horas\n",eletrodomestico[m].tMedio);
+	}
+}
+
+void salvarDados(teletrodomestico eletrodomestico[]){
+	int m;
+	FILE *arq;
+	arq = fopen("eletrodomesticos.txt","w");
+	printf(arq,"%d\n",qtdade);
+	
+	for(m=0;m<qtdade;m++){
+		printf(arq,"%s\n",eletrodomestico[m].nome);
+		printf(arq,"%lf\n",eletrodomestico[m].potencia);
+		printf(arq,"%lf\n",eletrodomestico[m].tMedio);
+	}
+	printf("Dados guardados com sucesso :)");
+}
+
+void carregaDados(teletrodomestico eletrodomestico[]){
+	FILE *arq;
+	int m;
+	arq = fopen("eletrodomesticos.txt","r");
+	if(arq==NULL){
+		printf("Arquivo nao foi encontrado :(\n");
+		return;
+	}
+	scanf(arq,"%d",&qtdade);
+	for(m=0;m<qtdade;m++){
+		scanf(arq,"%s",&eletrodomestico[m].nome);
+		scanf(arq,"%lf",&eletrodomestico[m].potencia);
+		scanf(arq,"%lf",&eletrodomestico[m].tMedio);
+	}
+	close(arq);
+	printf("Dados baixados com sucesso :)\n");
+}
+
+void buscarNome(teletrodomestico eletrodomestico[]){
+	
+	int m;
+	char nome[40];
+	printf("\nDigite o nome do eletrodomestico a ser encontrado:\n");
+	fflush(stdin);
+	gets(nome);
+	for(m=0;m<qtdade;m++){
+		if(strcmp(strupr(nome),strupr(eletrodomestico[m].nome)) == 0){
+			printf("\n***** Dados para eletrodomestico %d *****\n",m+1);
+			printf("Nome: %s\n",eletrodomestico[m].nome);
+			printf("Potencia: %.2lf kW\n",eletrodomestico[m].potencia);
+			printf("Tempo Medio: %.2lf horas\n",eletrodomestico[m].tMedio);	
+
+		}
+}
+}
+
+void buscarValorMaior(teletrodomestico eletrodomestico[]){
+	int m;
+	double x;
+	printf("\nDigite o valor x:\n");
+	scanf("%lf",&x);
+		if(x < eletrodomestico[m].potencia){
+			printf("\n***** Dados para eletrodomestico %d *****\n",m+1);
+			printf("Nome: %s\n",eletrodomestico[m].nome);
+			printf("Potencia: %.2lf kW\n",eletrodomestico[m].potencia);
+			printf("Tempo Medio: %.2lf horas\n",eletrodomestico[m].tMedio);	
+			
+		}
+		
+		
+	}
+
+
+
+void consumo(teletrodomestico eletrodomestico[]){
+	int m;
+	double valorkW,valor=0,total=0;
+	printf("Digite o valor do kW/h:\n");
+	scanf("%lf\n",&valorkW);
+	
+	for(m=0;m<qtdade;m++){
+		valor = eletrodomestico[m].potencia*eletrodomestico[m].tMedio;
+		printf("Total de kW/h do %s (%.2lf Kw * %.2lf horas): %.2lf kW/h\n",eletrodomestico[m].nome,eletrodomestico[m].potencia,eletrodomestico[m].tMedio,valor);
+		printf("Total em BRL do %s (%.2lf kW/h * R$%.2lf): R$%.2lf\n\n",eletrodomestico[m].nome,valor,valorkW,valor*valorkW);
+		total+=valor;
+	}
+	printf("\nTotal consumo diariamente (%.2lf Kw/h * R$%.2lf): R$%.2lf",total,valorkW,total*valorkW);
+	printf("\nTotal consumo mensalmente (R$%.2lf * 30): R$%.2lf",total*valorkW,total*valorkW*30);
+}
+
+int main(){
+	int op=0;
+	teletrodomestico eletrodomestico[max];
+	
+	do{
+		op = menu();
+		switch(op){
+			case 1:
+				cadastrarEletrodomestico(eletrodomestico);
+				break;
+			case 2:
+				mostraEletrodomesticos(eletrodomestico);
+				break;
+				
+			case 3:
+				salvarDados(eletrodomestico);
+				break;
+			case 4:
+				carregaDados(eletrodomestico);
+				break;
+			case 5:
+				buscarNome(eletrodomestico);
+				break;
+			case 6:
+				buscarValorMaior(eletrodomestico);
+				break;
+			case 7:
+				consumo(eletrodomestico);
+				break;	
+			case 8:
+			
+				break;
+		}
+		
+      	getch();
+      	system("cls");
+      	
+	}while(op!=0);
+	
+	return 0;
+}
