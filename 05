@@ -1,0 +1,278 @@
+#include<stdio.h>
+int max = 100;
+int qtdade = 0;
+
+struct emprestimo{
+	char data[20];
+	char nomeJogador[20];
+	char emprestado[1];
+}temprestimo;
+
+typedef struct jogo{
+	char titulo[30];
+	char console[30];
+	int ano;
+	int placar;
+	struct emprestimo emprestimo;
+
+}tjogo;
+
+int menu(){
+	int op;
+	printf("*** CATALOGO E CONTROLE DE COLECOES DE JOGOS****\n");
+	printf("1-Add novo jogo\n");
+	printf("2-Mostrar todos os jogos\n");
+	printf("3-Guardar em arquivo txt\n");
+	printf("4-Baixar arquivo txt\n");
+	printf("5-Procurar por titulo\n");
+	printf("6-Procurar console\n");
+	printf("7-Fazer Emprestimo\n");
+	printf("8-Fazer Devolucao\n");
+	printf("9-Lista de jogos emprestados\n");
+	
+	printf("0-Sair\n");
+	scanf("%d",&op);
+	return op;
+}
+
+void cadastrarJogo(tjogo jogo[]){
+	printf("***** Dados para jogo %d *****\n",qtdade+1);
+	
+	printf("Titulo:\n");
+	fflush(stdin);
+	gets(jogo[qtdade].titulo);
+	
+	printf("Console:\n");
+	fflush(stdin);
+	gets(jogo[qtdade].console);
+	
+	printf("Ano:\n");
+	scanf("%i",&jogo[qtdade].ano);
+	
+	printf("Placar:\n");
+	scanf("%i",&jogo[qtdade].placar);
+	
+	
+	strcpy(jogo[qtdade].emprestimo.data,"NAO EMPRESTADO");
+	strcpy(jogo[qtdade].emprestimo.emprestado,"N");
+	strcpy(jogo[qtdade].emprestimo.nomeJogador,"NAO EMPRESTADO");
+	
+	qtdade++;
+}
+
+void mostraJogo(tjogo jogo[]){
+	int m;
+	for(m=0;m<qtdade;m++){
+		printf("\n***** Dados para jogo %d *****\n",m+1);
+		printf("Titulo: %s\n",jogo[m].titulo);
+		printf("Console: %s\n",jogo[m].console);
+		printf("Ano: %i\n",jogo[m].ano);
+		printf("Placar: %i\n\n",jogo[m].placar);
+		printf("-Emprestimo-\n");
+		printf("Emprestado: %s\n",jogo[m].emprestimo.emprestado);
+		printf("Nome Jogador: %s\n",jogo[m].emprestimo.nomeJogador);
+		printf("Data: %s\n",jogo[m].emprestimo.data);
+	}
+}
+
+void salvarDados(tjogo jogo[]){
+	int m;
+	FILE *arq;
+	arq = fopen("jogos.txt","w");
+	fprintf(arq,"%d\n",qtdade);
+	
+	for(m=0;m<qtdade;m++){
+		fprintf(arq,"%s\n",jogo[m].titulo);
+		fprintf(arq,"%s\n",jogo[m].console);
+		fprintf(arq,"%i\n",jogo[m].ano);
+		fprintf(arq,"%i\n",jogo[m].placar);
+		fprintf(arq,"%s\n",jogo[m].emprestimo.emprestado);
+		fprintf(arq,"%s\n",jogo[m].emprestimo.nomeJogador);
+		fprintf(arq,"%s\n",jogo[m].emprestimo.data);
+	}
+	printf("Dados guardados com sucesso :)");
+}
+
+void carregaDados(tjogo jogo[]){
+	FILE *arq;
+	int m;
+	arq = fopen("jogos.txt","r");
+	if(arq==NULL){
+		printf("Arquivo nao encontrado :(\n");
+		return;
+	}
+	fscanf(arq,"%d",&qtdade);
+	for(m=0;m<qtdade;m++){
+		
+		fscanf(arq,"%s",&jogo[m].titulo);
+		fscanf(arq,"%s",&jogo[m].console);
+		fscanf(arq,"%i",&jogo[m].ano);
+		fscanf(arq,"%i",&jogo[m].placar);
+		fscanf(arq,"%s",&jogo[m].emprestimo.emprestado);
+		fscanf(arq,"%s",&jogo[m].emprestimo.nomeJogador);
+		fscanf(arq,"%s",&jogo[m].emprestimo.data);
+		
+	}
+	fclose(arq);
+	printf("Dados baixador com sucesso :)\n");
+}
+
+void buscarTitulo(tjogo jogo[]){
+	
+	int m;
+	char nome[20];
+	printf("\nDigite o titulo do jogo a ser encontrado:\n");
+	fflush(stdin);
+	gets(nome);
+	for(m=0;m<qtdade;m++){
+		if(strcmp(strupr(nome),strupr(jogo[m].titulo)) == 0){
+		printf("\n***** Dados para jogo %d *****\n",m+1);
+		printf("Titulo: %s\n",jogo[m].titulo);
+		printf("Console: %s\n",jogo[m].console);
+		printf("Ano: %i\n",jogo[m].ano);
+		printf("Placar: %i\n\n",jogo[m].placar);
+		printf("- Emprestimo -\n");
+		printf("Emprestado: %s\n",jogo[m].emprestimo.emprestado);
+		printf("Nome Jogador: %s\n",jogo[m].emprestimo.nomeJogador);
+		printf("Data: %s\n",jogo[m].emprestimo.data);
+
+		}
+}
+}
+
+void buscarConsole(tjogo jogo[]){
+	
+	int m;
+	char nome[20];
+	printf("\nDigite o console:\n");
+	fflush(stdin);
+	gets(nome);
+	for(m=0;m<qtdade;m++){
+		if(strcmp(strupr(nome),strupr(jogo[m].console)) == 0){
+		printf("\n***** Dados para jogo %d *****\n",m+1);
+		printf("Titulo: %s\n",jogo[m].titulo);
+		printf("Console: %s\n",jogo[m].console);
+		printf("Ano: %i\n",jogo[m].ano);
+		printf("Placar: %i\n\n",jogo[m].placar);
+		printf("- Emprestimo -\n");
+		printf("Emprestado: %s\n",jogo[m].emprestimo.emprestado);
+		printf("Nome Jogador: %s\n",jogo[m].emprestimo.nomeJogador);
+		printf("Data: %s\n",jogo[m].emprestimo.data);
+
+		}
+}
+}
+
+void emprestar(tjogo jogo[]){
+	int m;
+	char nome[20],opcao[1];
+	printf("\nDigite o titulo do jogo que sera emprestrado:\n");
+	fflush(stdin);
+	gets(nome);
+	for(m=0;m<qtdade;m++){
+		if(strcmp(strupr(nome),strupr(jogo[m].titulo)) == 0){
+			printf("Deseja emprestar o jogo %i - %s?(S/N):\n",m,jogo[m].titulo);
+			fflush(stdin);
+			gets(opcao);
+			if(strcmp(strupr(opcao),strupr("S")) == 0){
+				printf("Digite a data do emprestimo:\n");
+				fflush(stdin);
+				gets(jogo[m].emprestimo.data);
+				
+				printf("Digite o nome do Jogador:\n");
+				fflush(stdin);
+				gets(jogo[m].emprestimo.nomeJogador);
+				
+				strcpy(jogo[m].emprestimo.emprestado,"S");
+			}
+
+
+		}
+}
+}
+
+void devolver(tjogo jogo[]){
+	int m;
+	char nome[20],opcao[1];
+	printf("\nDigite o titulo do jogo que vai ser devolvido:\n");
+	fflush(stdin);
+	gets(nome);
+	for(m=0;m<qtdade;m++){
+		if(strcmp(strupr(nome),strupr(jogo[m].titulo)) == 0){
+			printf("Deseja devolver o jogo %i - %s?(S/N):\n",m,jogo[m].titulo);
+			fflush(stdin);
+			gets(opcao);
+			if(strcmp(strupr(opcao),strupr("S")) == 0){
+				strcpy(jogo[m].emprestimo.data,"NAO EMPRESTADO");
+				strcpy(jogo[m].emprestimo.emprestado,"N");
+				strcpy(jogo[m].emprestimo.nomeJogador,"NAO EMPRESTADO");
+				
+				printf("\nJogo foi devolvido");
+			}
+
+
+		}
+}
+}
+
+void listaEmprestados(tjogo jogo[]){
+	int m;
+	printf("\n***Jogos Emprestados***\n");
+	for(m=0;m<qtdade;m++){
+		if(strcmp(jogo[m].emprestimo.emprestado,"S") == 0){
+			printf("\n***** Dados para jogo %d *****\n",m+1);
+			printf("Titulo: %s\n",jogo[m].titulo);
+			printf("Console: %s\n",jogo[m].console);
+			printf("Ano: %i\n",jogo[m].ano);
+			printf("Placar: %i\n\n",jogo[m].placar);
+			printf(" - Emprestimo -\n");
+			printf("Emprestado: %s\n",jogo[m].emprestimo.emprestado);
+			printf("Nome Jogador: %s\n",jogo[m].emprestimo.nomeJogador);
+			printf("Data: %s\n",jogo[m].emprestimo.data);
+		}
+}
+}
+
+int main(){
+	int op=0;
+	tjogo jogo[max];
+	
+	do{
+		op = menu();
+		switch(op){
+			case 1:
+				cadastrarJogo(jogo);
+				break;
+			case 2:
+				mostraJogo(jogo);
+				break;				
+			case 3:
+				salvarDados(jogo);
+				break;
+			case 4:
+				carregaDados(jogo);
+				break;
+			case 5:
+				buscarTitulo(jogo);
+				break;
+			case 6:
+				buscarConsole(jogo);
+				break;
+			case 7:
+				emprestar(jogo);
+				break;	
+			case 8:
+				devolver(jogo);
+				break;
+			case 9:
+				listaEmprestados(jogo);
+				break;
+		}
+		
+      	getch();
+      	system("cls");
+      	
+	}while(op!=0);
+	
+	return 0;
+}
